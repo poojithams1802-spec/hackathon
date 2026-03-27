@@ -16,31 +16,29 @@ Features
 -  Spoken password validation  
 -  Fake (AI-generated) voice detection  
 -  Real-time threat alerts  
--  Confidence score display
 
 Tech Stack
 
 Languages
 - Python  
 - JavaScript  
-- HTML/CSS  
+- HTML
+- CSS  
 
 Frameworks & Libraries
 - Flask / FastAPI  
 - librosa (audio processing)  
-- scikit-learn (machine learning)  
-- Whisper (speech-to-text)  
+- scikit-learn (machine learning)   
 
 System Architecture
 
 1. User records voice input  
 2. Audio is processed and features are extracted  
-3. Speech is converted to text  
-4. System performs:
+3. System performs:
    - Password validation  
    - Speaker verification  
    - Deepfake detection  
-5. Final output:
+4. Final output:
    -  Access Granted  
    -  Access Denied  
    -  Alert triggered if fake voice detected
