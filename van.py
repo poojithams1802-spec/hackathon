@@ -1,1 +1,0 @@
-print("Varuni isgood bad")
