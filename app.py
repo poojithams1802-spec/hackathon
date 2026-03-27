@@ -1,3 +1,5 @@
+import os
+os.environ["PATH"] += os.pathsep + r"E:\extrcts\ffmpeg-8.1-essentials_build\bin"
 import pickle
 from utils import extract_features
 import whisper
@@ -31,8 +33,13 @@ speaker_pred = speaker_model.predict([features])[0]
 speaker_conf = max(speaker_model.predict_proba([features])[0])
 
 # -------- STEP 3: PASSWORD CHECK --------
-result = whisper_model.transcribe(input_file)
-text = result["text"].lower()
+result = whisper_model.transcribe(
+    input_file,
+    language="en",
+    fp16=False
+)
+
+text = result["text"].strip().lower()
 
 password = "open sesame"
 
