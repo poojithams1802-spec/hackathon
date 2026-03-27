@@ -3,6 +3,7 @@ import pickle
 from sklearn.ensemble import RandomForestClassifier
 from utils import extract_features
 
+os.makedirs("models", exist_ok=True)
 # ------------------ DEEPFAKE MODEL ------------------
 X, y = [], []
 
