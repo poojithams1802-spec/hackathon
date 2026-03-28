@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify
 import pickle
 import os
 from utils import extract_features
-from pydub import AudioSegment
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.config['JSON_SORT_KEYS'] = False
@@ -51,14 +50,6 @@ def login():
         filepath = "recordings/input.wav"
         audio.save(filepath)
 
-        # Convert to WAV if not already
-        try:
-            sound = AudioSegment.from_file(filepath)
-            sound.export(filepath, format="wav")
-        except Exception as conv_err:
-            print(f"Audio conversion error: {conv_err}")
-            return jsonify({"status": "ERROR", "message": "❌ Audio format not supported or conversion failed"}), 400
-
         # Extract features
         features = extract_features(filepath)
 
@@ -96,4 +87,4 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, use_reloader=False, host='127.0.0.1', port=5000)
+    app.run(debug=False, use_reloader=False, host='127.0.0.1', port=5050)
