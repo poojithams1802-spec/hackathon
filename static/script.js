@@ -1,7 +1,62 @@
+let mediaRecorder;
+let audioChunks = [];
+let recordedBlob = null;
+
+// Recording controls
+const recordBtn = document.getElementById('recordBtn');
+const stopBtn = document.getElementById('stopBtn');
+const playBtn = document.getElementById('playBtn');
+const audioPreview = document.getElementById('audioPreview');
+const fileInput = document.getElementById('audioFile');
+
+if (recordBtn && stopBtn && playBtn && audioPreview) {
+    recordBtn.onclick = async function () {
+        audioChunks = [];
+        recordedBlob = null;
+        playBtn.disabled = true;
+        audioPreview.style.display = 'none';
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                recordedBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                audioPreview.src = URL.createObjectURL(recordedBlob);
+                audioPreview.style.display = 'block';
+                playBtn.disabled = false;
+                // Set the file input to the recorded blob for upload
+                const file = new File([recordedBlob], 'recorded.wav', { type: 'audio/wav' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+            };
+            mediaRecorder.start();
+            recordBtn.disabled = true;
+            stopBtn.disabled = false;
+        } catch (err) {
+            alert('Microphone access denied or not available.');
+        }
+    };
+
+    stopBtn.onclick = function () {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+            recordBtn.disabled = false;
+            stopBtn.disabled = true;
+        }
+    };
+
+    playBtn.onclick = function () {
+        if (audioPreview.src) {
+            audioPreview.play();
+        }
+    };
+}
+
 window.uploadAudio = async function () {
     console.log("Login button clicked");
 
-    const fileInput = document.getElementById("audioFile");
+
     const userId = document.getElementById("userId").value;
 
     if (!userId) {
@@ -9,8 +64,9 @@ window.uploadAudio = async function () {
         return;
     }
 
+
     if (!fileInput.files.length) {
-        alert("Upload a .wav file");
+        alert("Upload or record a .wav file");
         return;
     }
 
@@ -73,12 +129,5 @@ window.uploadAudio = async function () {
     }
 };
 
-// Attach click listener to button
-console.log("Script loaded");
-const loginButton = document.querySelector('button');
-if (loginButton) {
-    loginButton.addEventListener('click', uploadAudio);
-    console.log("Button listener attached successfully");
-} else {
-    console.error("Button not found!");
-}
+
+// No need to attach click listener here, handled via HTML onclick

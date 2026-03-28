@@ -11,9 +11,17 @@
     <h1>Voice Authentication Login</h1>
 
 ```
+
 <input type="text" id="userId" placeholder="Enter User ID"><br>
 
+<!-- File upload option -->
 <input type="file" id="audioFile" accept=".wav"><br>
+
+<!-- Real-time recording controls -->
+<button id="recordBtn" type="button">Record</button>
+<button id="stopBtn" type="button" disabled>Stop</button>
+<button id="playBtn" type="button" disabled>Play</button>
+<audio id="audioPreview" controls style="display:none;"></audio><br>
 
 <button id="loginBtn" onclick="uploadAudio()">Login</button>
 
